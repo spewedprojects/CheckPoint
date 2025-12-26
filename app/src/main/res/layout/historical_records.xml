@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/colorContainer"
+        app:cardElevation="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp">
+                <TextView
+                    android:id="@+id/relapse_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+                    android:text="Relapse #?"
+                    android:textColor="?attr/colorOnTertiary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentStart="true"/>
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+                    android:text="12/12/2025 ৹ 1700hrs"
+                    android:layout_alignParentEnd="true"/>
+                <TextView
+                    android:id="@+id/reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+                    android:text="'Reason'"
+                    android:layout_below="@+id/timestamp"/>
+                <TextView
+                    android:id="@+id/next_steps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+                    android:text="Next Steps:"
+                    android:layout_below="@id/reason"/>
+                <TextView
+                    android:id="@+id/next_steps_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+                    android:text="Will do this and that..."
+                    android:textStyle="italic"
+                    android:layout_below="@id/next_steps"/>
+                <TextView
+                    android:id="@+id/streak_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+                    android:text="Streak lasted: 58d 2h 48m"
+                    android:drawableStart="@drawable/clock_loader_80_24"
+                    android:drawablePadding="6dp"
+                    android:layout_below="@id/next_steps_desc"/>
+            </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CheckPoint" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:colorBackground">#101010</item>
+        <item name="colorPrimary">#101010</item>
+        <item name="colorContainer">#101010</item>
+        <item name="colorSecondary">#000000</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="colorOnPrimary">#CACACA</item>
+
+        <item name="strokeColor">@color/relapse_stroke_dark</item>
+        <item name="rippleColor">@color/relapse_ripple_dark</item>
+        <item name="colorOnTertiary">@color/relapse_text_dark</item>
+        <item name="colorTertiary">@color/relapse_background_dark</item>
+
+    </style>
+</resources>
