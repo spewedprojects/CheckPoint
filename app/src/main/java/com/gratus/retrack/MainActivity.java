@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
         tvStaticLabel = findViewById(R.id.static_text);
         btnAction = findViewById(R.id.start_relapseButton);
 
+        View historyBtn = findViewById(R.id.history_space);
+        historyBtn.setOnClickListener(v -> {
+            HistoryBottomSheet bottomSheet = new HistoryBottomSheet();
+            bottomSheet.show(getSupportFragmentManager(), "HistorySheet");
+        });
+
         // Store original styles from XML
         originalBtnBackground = btnAction.getBackgroundTintList();
         originalBtnTextColor = btnAction.getTextColors();

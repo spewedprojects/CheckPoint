@@ -115,7 +115,7 @@
                     android:includeFontPadding="true"
                     android:paddingHorizontal="35dp"
                     android:paddingVertical="15dp"
-                    android:text="Relapse"
+                    android:text="Restart"
                     android:textColor="?attr/colorOnTertiary"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:layout_gravity="center"

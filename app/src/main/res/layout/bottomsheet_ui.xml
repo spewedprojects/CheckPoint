@@ -6,37 +6,48 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottomsheet_rounded">
 
-    <!-- Header Title -->
-    <TextView
-        android:id="@+id/history_title"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomsheet_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Historical records"
-        android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
-        android:textSize="16sp"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/divider_journal"/>
+        app:layout_constraintBottom_toTopOf="@id/divider_journal"
+        android:clickable="true">
 
-    <!-- Close Button -->
-    <ImageButton
-        android:id="@+id/close_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/close_small_24"
-        android:background="@android:color/transparent"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/divider_journal"/>
+        <!-- Header Title -->
+        <TextView
+            android:id="@+id/history_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Historical records"
+            android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+            android:textSize="16sp"
+            android:layout_margin="16dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- Close Button -->
+        <ImageButton
+            android:id="@+id/close_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/close_small_24"
+            android:background="@android:color/transparent"
+            android:padding="15dp"
+            android:contentDescription="Close Journal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_journal"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintTop_toBottomOf="@id/history_title"
+        app:layout_constraintTop_toBottomOf="@id/bottomsheet_header"
         app:layout_constraintBottom_toTopOf="@id/history_space"/>
 
     <androidx.core.widget.NestedScrollView
@@ -50,7 +61,7 @@
         <!-- Included Content -->
         <include
             layout="@layout/historical_records"
-            app:layout_constraintTop_toBottomOf="@id/history_title"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
