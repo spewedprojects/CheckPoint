@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.gratus.checkpoint"
+    namespace = "com.gratus.retrack"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.gratus.checkpoint"
+        applicationId = "com.gratus.retrack"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
