@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         tvStreak.setText("\uD83C\uDFC6 0 days");
     }
 
+
     private void setRelapseUIState(boolean animate) {
         if (animate) {
             TransitionManager.beginDelayedTransition(rootLayout);

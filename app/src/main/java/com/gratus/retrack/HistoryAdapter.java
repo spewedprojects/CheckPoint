@@ -73,4 +73,5 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tvDuration = itemView.findViewById(R.id.streak_duration);
         }
     }
+
 }

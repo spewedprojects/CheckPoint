@@ -103,4 +103,5 @@ public class RelapseDbHelper extends SQLiteOpenHelper {
         db.close();
         return hasRecords;
     }
+
 }
