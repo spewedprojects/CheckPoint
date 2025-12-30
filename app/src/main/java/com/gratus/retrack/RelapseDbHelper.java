@@ -94,4 +94,13 @@ public class RelapseDbHelper extends SQLiteOpenHelper {
         db.close();
         return max;
     }
+
+    public boolean hasRecords() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT 1 FROM " + TABLE_RELAPSE + " LIMIT 1", null);
+        boolean hasRecords = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return hasRecords;
+    }
 }

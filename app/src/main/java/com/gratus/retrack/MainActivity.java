@@ -11,6 +11,7 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvDaysFree, tvCountdown, tvMotivation, tvStaticLabel, tvStreak;
     private MaterialButton btnAction;
     private ViewGroup rootLayout;
+    private View historyBtn; // Reference for toggling visibility
 
     // Timer components
     private Handler timerHandler = new Handler(Looper.getMainLooper());
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     // New Keys for Custom Text
     private static final String KEY_TEXT_MOTIVATION = "textMotivation";
     private static final String KEY_TEXT_LABEL = "textLabel";
+
+    // Configuration
+    private static final float DIALOG_DIM_AMOUNT = 0.2f; // Set your dim amount here (0.0 to 1.0)
 
     // Original button styles to revert to
     private ColorStateList originalBtnBackground;
@@ -66,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
         tvStaticLabel = findViewById(R.id.static_text);
         tvStreak = findViewById(R.id.bestStreak_days);
         btnAction = findViewById(R.id.start_relapseButton);
+        //tvEditfields = findViewById(R.id.editorTitle);
+
+        // Capture history button reference
+        historyBtn = findViewById(R.id.history_space);
+        historyBtn.setOnClickListener(v -> {
+            HistoryBottomSheet bottomSheet = new HistoryBottomSheet();
+            bottomSheet.show(getSupportFragmentManager(), "HistorySheet");
+        });
 
         View historyBtn = findViewById(R.id.history_space);
         historyBtn.setOnClickListener(v -> {
@@ -90,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         // 3. Check State and Setup UI
         checkStateAndInit();
         loadCustomTexts(); // Load the edited texts
+        updateHistoryButtonVisibility(); // Check history on load
 
         // 4. Setup Button Listener
         btnAction.setOnClickListener(v -> {
@@ -102,16 +116,28 @@ public class MainActivity extends AppCompatActivity {
 
         // 5. Setup Long Click Listeners for Editing
         tvMotivation.setOnLongClickListener(v -> {
-            showFieldEditor(tvMotivation, KEY_TEXT_MOTIVATION, "Edit Quote");
+            showFieldEditor(tvMotivation, KEY_TEXT_MOTIVATION, "Change Quote");
             return true;
         });
 
         tvStaticLabel.setOnLongClickListener(v -> {
-            showFieldEditor(tvStaticLabel, KEY_TEXT_LABEL, "Edit Label");
+            showFieldEditor(tvStaticLabel, KEY_TEXT_LABEL, "Change Unit");
             return true;
         });
 
         updateBestStreakDisplay();
+    }
+
+    private void updateHistoryButtonVisibility() {
+        RelapseDbHelper dbHelper = new RelapseDbHelper(this);
+        if (dbHelper.hasRecords()) {
+            if (historyBtn.getVisibility() != View.VISIBLE) {
+                TransitionManager.beginDelayedTransition(rootLayout); // Animate appearance
+                historyBtn.setVisibility(View.VISIBLE);
+            }
+        } else {
+            historyBtn.setVisibility(View.GONE);
+        }
     }
 
     private void checkStateAndInit() {
@@ -174,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         timerHandler.post(timerRunnable);
+        updateBestStreakDisplay();
     }
 
     private void updateTimerDisplay() {
@@ -218,8 +245,11 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 2.1. Set Transparent Background & Dim Amount
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setDimAmount(DIALOG_DIM_AMOUNT); // Applied Dimming
         }
 
         MaterialButton btnCancel = dialogView.findViewById(R.id.dialog_cancel);
@@ -246,6 +276,8 @@ public class MainActivity extends AppCompatActivity {
 
             // 4. Refresh Best Streak Display
             updateBestStreakDisplay();
+            // 2.2. Check visibility again since we just added a record
+            updateHistoryButtonVisibility();
 
             dialog.dismiss();
         });
@@ -263,8 +295,11 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(dialogView);
 
         AlertDialog dialog = builder.create();
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 2.1. Set Transparent Background & Dim Amount
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setDimAmount(DIALOG_DIM_AMOUNT); // Applied Dimming
         }
 
         // Initialize Editor Views

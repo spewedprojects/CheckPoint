@@ -9,6 +9,7 @@
         <item name="colorSecondary">#000000</item>
         <item name="titleTextColor">@color/white</item>
         <item name="colorOnPrimary">#CACACA</item>
+        <item name="colorAccent">#CACACA</item>
 
         <item name="strokeColor">@color/relapse_stroke_dark</item>
         <item name="rippleColor">@color/relapse_ripple_dark</item>

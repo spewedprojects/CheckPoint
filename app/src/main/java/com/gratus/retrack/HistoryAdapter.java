@@ -34,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         // 1. Relapse Number (Count backwards so newest is highest number)
         int relapseNumber = historyList.size() - position;
-        holder.tvTitle.setText("Relapse #" + relapseNumber);
+        holder.tvTitle.setText("Reset #" + relapseNumber);
 
         // 2. Date Formatting (e.g., 12/12/2025 • 1700hrs)
         Calendar cal = Calendar.getInstance(Locale.getDefault());
