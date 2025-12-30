@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:fillViewport="true"
+    android:fitsSystemWindows="false"
     android:background="@drawable/diagonal_gradient"
     app:layout_constraintVertical_chainStyle="packed">
 
@@ -44,7 +45,7 @@
                     android:id="@+id/bestStreak_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🏆 243 days"
+                    android:text="🏆 0 days"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:textColor="?attr/colorOnPrimary"/>
             </LinearLayout>
@@ -101,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20sp"
-                    android:text="00:00:00"
+                    android:text="0h 0m 0s"
                     android:letterSpacing="0.1"
                     android:layout_gravity="center"
                     android:fontFamily="@font/atkinson_hyperlegible"

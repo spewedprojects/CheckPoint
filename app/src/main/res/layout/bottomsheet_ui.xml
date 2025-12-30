@@ -11,22 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/divider_journal"
-        android:clickable="true">
+        app:layout_constraintBottom_toTopOf="@id/divider_journal">
 
         <!-- Header Title -->
         <TextView
             android:id="@+id/history_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Historical records"
             android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
             android:textSize="16sp"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="10dp"
+            android:textAlignment="viewStart"
+            android:padding="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/close_history"/>
 
         <!-- Close Button -->
         <ImageButton
@@ -55,15 +55,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:behavior_draggable="false"
         app:layout_constraintTop_toBottomOf="@id/divider_journal">
 
-        <!-- Included Content -->
-        <include
-            layout="@layout/historical_records"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

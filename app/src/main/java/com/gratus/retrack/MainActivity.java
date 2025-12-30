@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView tvDaysFree, tvCountdown, tvMotivation, tvStaticLabel;
+    private TextView tvDaysFree, tvCountdown, tvMotivation, tvStaticLabel, tvStreak;
     private MaterialButton btnAction;
     private ViewGroup rootLayout;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Persistence
     private SharedPreferences prefs;
-    private static final String PREFS_NAME = "CheckpointPrefs";
+    private static final String PREFS_NAME = "ReTrack_config_Prefs";
     private static final String KEY_START_TIME = "startTime";
     private static final String KEY_IS_RUNNING = "isRunning";
 
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         tvCountdown = findViewById(R.id.countdown);
         tvMotivation = findViewById(R.id.motivation_text); // Ensure ID is added in XML
         tvStaticLabel = findViewById(R.id.static_text);
+        tvStreak = findViewById(R.id.bestStreak_days);
         btnAction = findViewById(R.id.start_relapseButton);
 
         View historyBtn = findViewById(R.id.history_space);
@@ -109,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
             showFieldEditor(tvStaticLabel, KEY_TEXT_LABEL, "Edit Label");
             return true;
         });
+
+        updateBestStreakDisplay();
     }
 
     private void checkStateAndInit() {
@@ -136,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
         btnAction.setTextColor(Color.WHITE);
         btnAction.setText("Start Journey");
         tvDaysFree.setText("0");
-        tvCountdown.setText("00:00:00");
+        tvCountdown.setText("0h 0m 0s");
+        tvStreak.setText("\uD83C\uDFC6 0 days");
     }
 
     private void setRelapseUIState(boolean animate) {
@@ -185,8 +189,24 @@ public class MainActivity extends AppCompatActivity {
 
         tvDaysFree.setText(String.valueOf(days));
         String timeFormatted = String.format(Locale.getDefault(),
-                "%02d:%02d:%02d", hours, minutes, seconds);
+                "%01dh %01dm %01ds", hours, minutes, seconds);
         tvCountdown.setText(timeFormatted);
+    }
+
+    private void updateBestStreakDisplay() {
+        RelapseDbHelper dbHelper = new RelapseDbHelper(this);
+        long bestDurationMs = dbHelper.getBestStreakDuration();
+
+        // Also check if current running streak is the best
+        long currentStart = prefs.getLong(KEY_START_TIME, System.currentTimeMillis());
+        long currentDuration = System.currentTimeMillis() - currentStart;
+
+        if (currentDuration > bestDurationMs) {
+            bestDurationMs = currentDuration;
+        }
+
+        long days = TimeUnit.MILLISECONDS.toDays(bestDurationMs);
+        tvStreak.setText("\uD83C\uDFC6 " + days + " days"); // 🏆 {days} days
     }
 
     // --- DIALOGS ---
@@ -204,12 +224,29 @@ public class MainActivity extends AppCompatActivity {
 
         MaterialButton btnCancel = dialogView.findViewById(R.id.dialog_cancel);
         MaterialButton btnReset = dialogView.findViewById(R.id.dialog_relapse);
+        TextInputEditText etReason = dialogView.findViewById(R.id.reason_input);
+        TextInputEditText etSteps = dialogView.findViewById(R.id.next_steps_input);
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
+
         btnReset.setOnClickListener(v -> {
-            long newStartTime = System.currentTimeMillis();
-            prefs.edit().putLong(KEY_START_TIME, newStartTime).apply();
+            // 1. Gather Data
+            long endTime = System.currentTimeMillis();
+            long startTime = prefs.getLong(KEY_START_TIME, endTime);
+            String reason = etReason.getText() != null ? etReason.getText().toString() : "";
+            String steps = etSteps.getText() != null ? etSteps.getText().toString() : "";
+
+            // 2. Save to DB
+            RelapseDbHelper dbHelper = new RelapseDbHelper(this);
+            dbHelper.addRelapse(startTime, endTime, reason, steps);
+
+            // 3. Reset Timer
+            prefs.edit().putLong(KEY_START_TIME, endTime).apply();
             updateTimerDisplay();
+
+            // 4. Refresh Best Streak Display
+            updateBestStreakDisplay();
+
             dialog.dismiss();
         });
 
