@@ -42,7 +42,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/editfileds_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/edit_square_24"
+                        android:src="@drawable/edit_square_24dp_wght300_grad200_opsz40"
                         android:background="@drawable/round_button_bg2"
                         android:layout_marginTop="14dp"
                         android:layout_gravity="center"
@@ -92,7 +92,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center"
-                        android:paddingVertical="6dp">
+                        android:paddingTop="6dp"
+                        android:paddingBottom="7dp">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/cancelBtn"
