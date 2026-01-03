@@ -11,10 +11,10 @@
         <item name="colorOnPrimary">#4A4A4A</item>
         <item name="colorAccent">#4A4A4A</item>
 
-        <item name="strokeColor">@color/relapse_stroke_light</item>
-        <item name="rippleColor">@color/relapse_ripple_light</item>
-        <item name="colorOnTertiary">@color/relapse_text_light</item>
-        <item name="colorTertiary">@color/relapse_background_light</item>
+        <item name="strokeColor">@color/relapse_stroke</item>
+        <item name="rippleColor">@color/relapse_ripple</item>
+        <item name="colorOnTertiary">@color/relapse_text</item>
+        <item name="colorTertiary">@color/relapse_background</item>
 
     </style>
 

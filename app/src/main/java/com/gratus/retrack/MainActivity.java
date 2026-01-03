@@ -161,8 +161,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStartUIState() {
-        btnAction.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-        btnAction.setTextColor(Color.WHITE);
+        // Use ContextCompat to resolve the color based on the current theme
+        int bgColor = androidx.core.content.ContextCompat.getColor(this, R.color.relapse_button_bg);
+        int textColor = androidx.core.content.ContextCompat.getColor(this, R.color.relapse_button_text);
+
+        btnAction.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+        btnAction.setTextColor(textColor);
         btnAction.setText("Start Journey");
         tvDaysFree.setText("0");
         tvCountdown.setText("0h 0m 0s");
@@ -237,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
         tvStreak.setText("\uD83C\uDFC6 " + days + " days"); // 🏆 {days} days
     }
 
-    // --- DIALOGS ---
 
+    // --- DIALOGS ---
     private void showRelapseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();

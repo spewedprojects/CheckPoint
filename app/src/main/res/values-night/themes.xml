@@ -11,10 +11,10 @@
         <item name="colorOnPrimary">#CACACA</item>
         <item name="colorAccent">#CACACA</item>
 
-        <item name="strokeColor">@color/relapse_stroke_dark</item>
-        <item name="rippleColor">@color/relapse_ripple_dark</item>
-        <item name="colorOnTertiary">@color/relapse_text_dark</item>
-        <item name="colorTertiary">@color/relapse_background_dark</item>
+        <item name="strokeColor">@color/relapse_stroke</item>
+        <item name="rippleColor">@color/relapse_ripple</item>
+        <item name="colorOnTertiary">@color/relapse_text</item>
+        <item name="colorTertiary">@color/relapse_background</item>
 
     </style>
 </resources>

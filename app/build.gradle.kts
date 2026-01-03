@@ -12,8 +12,8 @@ android {
         applicationId = "com.gratus.retrack"
         minSdk = 24
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.a.b"
+        versionCode = 7
+        versionName = "1.1.a"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

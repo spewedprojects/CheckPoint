@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBackground">#101010</color>
+    <color name="relapse_text">#FF4747</color>
+    <color name="relapse_background">#1AED3B4C</color>
+    <color name="relapse_ripple">#27FB3C65</color>
+    <color name="relapse_stroke">#4CD02A2A</color>
+    <color name="gradient_start">#0Effbcad</color>
+    <color name="gradient_end">#107a92ff</color>
+
+    <color name="relapse_button_bg">#FFFFFF</color> <!-- White -->
+    <color name="relapse_button_text">#000000</color> <!-- Black -->
+</resources>

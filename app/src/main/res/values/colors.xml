@@ -3,19 +3,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorBackground_light">#FDFDFD</color>
-    <color name="relapse_text_light">#CE0B0B</color>
-    <color name="relapse_background_light">#0DFF002F</color>
-    <color name="relapse_ripple_light">#27FF002F</color>
-    <color name="relapse_stroke_light">#4CD02A2A</color>
-    <color name="gradient_start_light">#0EFF5733</color>
-    <color name="gradient_end_light">#103357FF</color>
+    <color name="colorBackground">#FDFDFD</color>
+    <color name="relapse_text">#CE0B0B</color>
+    <color name="relapse_background">#0DFF002F</color>
+    <color name="relapse_ripple">#27FF002F</color>
+    <color name="relapse_stroke">#4CD02A2A</color>
+    <color name="gradient_start">#0EFF5733</color>
+    <color name="gradient_end">#103357FF</color>
 
-    <color name="colorBackground_dark">#101010</color>
-    <color name="relapse_text_dark">#FF4747</color>
-    <color name="relapse_background_dark">#1AED3B4C</color>
-    <color name="relapse_ripple_dark">#27FB3C65</color>
-    <color name="relapse_stroke_dark">#4CD02A2A</color>
-    <color name="gradient_start_dark">#0Effbcad</color>
-    <color name="gradient_end_dark">#107a92ff</color>
+    <color name="relapse_button_bg">#000000</color> <!-- Black -->
+    <color name="relapse_button_text">#FFFFFF</color> <!-- White -->
 </resources>
