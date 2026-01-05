@@ -63,15 +63,17 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
 //            WindowCompat.setDecorFitsSystemWindows(window, false);
 //        }
 
+        ///*
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.bottom_sheet_root), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(
                     systemBars.left,
-                    systemBars.top,
+                    0,
                     systemBars.right,
-                    systemBars.bottom);
+                    0);
             return insets;
         });
+        //*/
     }
 
     @Override
