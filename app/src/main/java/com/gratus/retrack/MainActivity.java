@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //applyTheme();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        applyTheme();
 
         // 1. Initialize Views
         rootLayout = findViewById(R.id.main);
@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Apply the saved theme or default to 'auto'.
      */
+    /**
     private void applyTheme() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String theme = prefs.getString(KEY_THEME_STATE, "auto"); // Default to 'auto'
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                 break;
         }
-    }
+    }*/
 
     /**
      * Set up the theme toggle buttons.
@@ -173,17 +174,23 @@ public class MainActivity extends AppCompatActivity {
 
             // Set click listeners for the buttons
             lightButton.setOnClickListener(v -> {
-                setThemeWithFade("light");
+                AppCompatDelegate.setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_NO
+                );
                 updateButtonVisibility("light", lightButton, darkButton, autoButton);
             });
 
             darkButton.setOnClickListener(v -> {
-                setThemeWithFade("dark");
+                AppCompatDelegate.setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_YES
+                );
                 updateButtonVisibility("dark", lightButton, darkButton, autoButton);
             });
 
             autoButton.setOnClickListener(v -> {
-                setThemeWithFade("auto");
+                AppCompatDelegate.setDefaultNightMode(
+                        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                );
                 updateButtonVisibility("auto", lightButton, darkButton, autoButton);
             });
         }
@@ -218,45 +225,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Set the theme and save the selection to SharedPreferences.
      */
+    /**
     private void setThemeAndSave(String theme) {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        String current = prefs.getString(KEY_THEME_STATE, null);
+        if (theme.equals(current)) return;
+
         prefs.edit().putString(KEY_THEME_STATE, theme).apply();
-
-        // Log the saved theme
-        System.out.println("Saved theme: " + theme);
-
-        // Apply the new theme
-        applyTheme();
-
-        // Restart the activity to reflect the theme change
         recreate();
-    }
-
-    private void setThemeWithFade(String theme) {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        prefs.edit().putString(KEY_THEME_STATE, theme).apply();
-
-        final View root = findViewById(android.R.id.content);
-
-        // Create a snapshot of the current UI
-        root.setDrawingCacheEnabled(true);
-        Bitmap snapshot = Bitmap.createBitmap(root.getDrawingCache());
-        root.setDrawingCacheEnabled(false);
-
-        final ImageView overlay = new ImageView(this);
-        overlay.setImageBitmap(snapshot);
-        ((ViewGroup) root).addView(overlay);
-
-        // Apply theme while overlay hides the flash
-        applyTheme();
-
-        // Fade out the overlay
-        overlay.animate()
-                .alpha(0f)
-                .setDuration(600)
-                .withEndAction(() -> ((ViewGroup) root).removeView(overlay))
-                .start();
-    }
+    }*/
 
     private void updateHistoryButtonVisibility() {
         RelapseDbHelper dbHelper = new RelapseDbHelper(this);

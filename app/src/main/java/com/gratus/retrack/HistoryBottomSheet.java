@@ -56,12 +56,12 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
         // --- NEW CODE END ---
 
         // Transparent system bars
-//        Window window = requireDialog().getWindow();
-//        if (window != null) {
-//            window.setStatusBarColor(Color.TRANSPARENT);
-//            window.setNavigationBarColor(Color.TRANSPARENT);
-//            WindowCompat.setDecorFitsSystemWindows(window, false);
-//        }
+        Window window = requireDialog().getWindow();
+        if (window != null) {
+            window.setStatusBarColor(Color.TRANSPARENT);
+            window.setNavigationBarColor(Color.TRANSPARENT);
+            WindowCompat.setDecorFitsSystemWindows(window, false);
+        }
 
         ///*
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.bottom_sheet_root), (v, insets) -> {
