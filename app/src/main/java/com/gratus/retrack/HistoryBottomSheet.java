@@ -7,11 +7,16 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +54,24 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
         HistoryAdapter adapter = new HistoryAdapter(logs);
         recyclerView.setAdapter(adapter);
         // --- NEW CODE END ---
+
+        // Transparent system bars
+//        Window window = requireDialog().getWindow();
+//        if (window != null) {
+//            window.setStatusBarColor(Color.TRANSPARENT);
+//            window.setNavigationBarColor(Color.TRANSPARENT);
+//            WindowCompat.setDecorFitsSystemWindows(window, false);
+//        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.bottom_sheet_root), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(
+                    systemBars.left,
+                    systemBars.top,
+                    systemBars.right,
+                    systemBars.bottom);
+            return insets;
+        });
     }
 
     @Override
@@ -60,6 +83,7 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
             if (bottomSheet != null) {
                 bottomSheet.setBackgroundColor(Color.TRANSPARENT);
                 behavior = BottomSheetBehavior.from(bottomSheet);
+                //behavior.setPeekHeight(300);
 
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 behavior.setSkipCollapsed(true);

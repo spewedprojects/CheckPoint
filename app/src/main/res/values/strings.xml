@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ReTrack</string>
+    <string name="history_button">HISTORY</string>
+    <string name="reset_button">Reset</string>
+    <string name="best_streak">BEST STREAK</string>
+    <string name="streak_days">🏆 0 days</string>
+    <string name="motivation_text_def">EVERY EFFORT COUNTS.</string>
+    <string name="days_free_placeholder">0</string>
+    <string name="static_text_def">DAYS SINCE</string>
+    <string name="countdown_placeholder">0h 0m 0s</string>
 </resources>

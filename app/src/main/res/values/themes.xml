@@ -16,6 +16,8 @@
         <item name="colorOnTertiary">@color/relapse_text</item>
         <item name="colorTertiary">@color/relapse_background</item>
 
+        <item name="colorSurfaceContainerLow">#FFFFFF</item>
+
     </style>
 
     <style name="Theme.CheckPoint" parent="Base.Theme.CheckPoint" />

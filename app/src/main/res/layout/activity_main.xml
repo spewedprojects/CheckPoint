@@ -33,14 +33,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintVertical_bias="0"
                 app:layout_constraintHorizontal_bias="0">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BEST STREAK"
+                    android:text="@string/best_streak"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:textColor="?attr/colorOnPrimary"/>
-
                 <TextView
                     android:id="@+id/bestStreak_days"
                     android:layout_width="wrap_content"
@@ -49,6 +47,57 @@
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:textColor="?attr/colorOnPrimary"/>
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/theme_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:padding="13dp"
+                android:paddingVertical="6dp"
+                android:src="@drawable/light_mode"
+                android:alpha="0.1"
+                app:tint="?attr/colorOnPrimary"
+                android:background="@android:color/transparent"
+                app:layout_constraintStart_toEndOf="@id/best_streak"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                android:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/theme_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:padding="13dp"
+                android:paddingVertical="6dp"
+                android:src="@drawable/dark_mode"
+                android:alpha="0.1"
+                app:tint="?attr/colorOnPrimary"
+                android:background="@android:color/transparent"
+                app:layout_constraintStart_toEndOf="@id/best_streak"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                android:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/theme_auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:padding="13dp"
+                android:paddingVertical="6dp"
+                android:src="@drawable/auto_mode"
+                android:alpha="0.1"
+                app:tint="?attr/colorOnPrimary"
+                android:background="@android:color/transparent"
+                app:layout_constraintStart_toEndOf="@id/best_streak"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                android:visibility="visible"/>
 
             <LinearLayout
                 android:id="@+id/action_items"
@@ -69,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="25dp"
                     android:padding="10dp"
-                    android:text="EVERY EFFORT COUNTS."
+                    android:text="@string/motivation_text_def"
                     android:layout_gravity="center"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:textColor="?attr/colorOnPrimary"
@@ -80,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:padding="0dp"
-                    android:text="90"
+                    android:text="@string/days_free_placeholder"
                     android:textSize="150sp"
                     android:layout_gravity="center"
                     android:fontFamily="@font/atkinsonhyperlegiblenext_extralight"
@@ -92,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10sp"
                     android:padding="10dp"
-                    android:text="DAYS SINCE"
+                    android:text="@string/static_text_def"
                     android:layout_gravity="center"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:textColor="?attr/colorOnPrimary"
@@ -102,7 +151,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20sp"
-                    android:text="0h 0m 0s"
                     android:letterSpacing="0.1"
                     android:layout_gravity="center"
                     android:fontFamily="@font/atkinson_hyperlegible"
@@ -116,7 +164,7 @@
                     android:includeFontPadding="true"
                     android:paddingHorizontal="35dp"
                     android:paddingVertical="15dp"
-                    android:text="Reset"
+                    android:text="@string/reset_button"
                     android:textColor="?attr/colorOnTertiary"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:layout_gravity="center"
@@ -131,6 +179,7 @@
                 android:id="@+id/history_space"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:focusable="true"
                 android:orientation="vertical"
                 android:layout_margin="20dp"
                 android:paddingHorizontal="20dp"
@@ -145,7 +194,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HISTORY"
+                    android:text="@string/history_button"
                     android:layout_gravity="center"
                     android:fontFamily="@font/atkinson_hyperlegible"
                     android:textColor="?attr/colorOnPrimary"/>

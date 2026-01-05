@@ -16,5 +16,7 @@
         <item name="colorOnTertiary">@color/relapse_text</item>
         <item name="colorTertiary">@color/relapse_background</item>
 
+        <item name="colorSurfaceContainerLow">#000000</item>
+
     </style>
 </resources>

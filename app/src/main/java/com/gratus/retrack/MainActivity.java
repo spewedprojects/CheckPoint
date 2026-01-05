@@ -2,6 +2,7 @@ package com.gratus.retrack;
 
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,11 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_TEXT_MOTIVATION = "textMotivation";
     private static final String KEY_TEXT_LABEL = "textLabel";
 
+    // New key for storing theme state
+    private static final String KEY_THEME_STATE = "themeState";
+
     // Configuration
     private static final float DIALOG_DIM_AMOUNT = 0.2f; // Set your dim amount here (0.0 to 1.0)
 
@@ -62,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        applyTheme();
 
         // 1. Initialize Views
         rootLayout = findViewById(R.id.main);
@@ -75,12 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Capture history button reference
         historyBtn = findViewById(R.id.history_space);
-        historyBtn.setOnClickListener(v -> {
-            HistoryBottomSheet bottomSheet = new HistoryBottomSheet();
-            bottomSheet.show(getSupportFragmentManager(), "HistorySheet");
-        });
-
-        View historyBtn = findViewById(R.id.history_space);
         historyBtn.setOnClickListener(v -> {
             HistoryBottomSheet bottomSheet = new HistoryBottomSheet();
             bottomSheet.show(getSupportFragmentManager(), "HistorySheet");
@@ -126,6 +129,133 @@ public class MainActivity extends AppCompatActivity {
         });
 
         updateBestStreakDisplay();
+
+        // Initialize theme buttons
+        setupThemeButtons();
+    }
+
+    /**
+     * Apply the saved theme or default to 'auto'.
+     */
+    private void applyTheme() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String theme = prefs.getString(KEY_THEME_STATE, "auto"); // Default to 'auto'
+
+        switch (theme) {
+            case "light":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "dark":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case "auto":
+            default:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+        }
+    }
+
+    /**
+     * Set up the theme toggle buttons.
+     */
+    private void setupThemeButtons() {
+        ImageButton lightButton = findViewById(R.id.theme_light);
+        ImageButton darkButton = findViewById(R.id.theme_dark);
+        ImageButton autoButton = findViewById(R.id.theme_auto);
+
+        if (lightButton != null && darkButton != null && autoButton != null) {
+            // Get the current theme from SharedPreferences
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            String currentTheme = prefs.getString(KEY_THEME_STATE, "auto");
+
+            // Update button visibility based on the current theme
+            updateButtonVisibility(currentTheme, lightButton, darkButton, autoButton);
+
+            // Set click listeners for the buttons
+            lightButton.setOnClickListener(v -> {
+                setThemeWithFade("light");
+                updateButtonVisibility("light", lightButton, darkButton, autoButton);
+            });
+
+            darkButton.setOnClickListener(v -> {
+                setThemeWithFade("dark");
+                updateButtonVisibility("dark", lightButton, darkButton, autoButton);
+            });
+
+            autoButton.setOnClickListener(v -> {
+                setThemeWithFade("auto");
+                updateButtonVisibility("auto", lightButton, darkButton, autoButton);
+            });
+        }
+    }
+
+    /**
+     * Update the visibility of the theme buttons based on the current theme.
+     */
+    private void updateButtonVisibility(String currentTheme, ImageButton lightButton, ImageButton darkButton, ImageButton autoButton) {
+        switch (currentTheme) {
+            case "light":
+                lightButton.setVisibility(View.GONE);
+                darkButton.setVisibility(View.VISIBLE);
+                autoButton.setVisibility(View.GONE);
+                System.out.println("Light mode: Hiding light button, showing dark and auto buttons.");
+                break;
+            case "dark":
+                lightButton.setVisibility(View.GONE);
+                darkButton.setVisibility(View.GONE);
+                autoButton.setVisibility(View.VISIBLE);
+                System.out.println("Dark mode: Showing light button, hiding dark button, showing auto button.");
+                break;
+            case "auto":
+                lightButton.setVisibility(View.VISIBLE);
+                darkButton.setVisibility(View.GONE);
+                autoButton.setVisibility(View.GONE);
+                System.out.println("Auto mode: Showing light and dark buttons, hiding auto button.");
+                break;
+        }
+    }
+
+    /**
+     * Set the theme and save the selection to SharedPreferences.
+     */
+    private void setThemeAndSave(String theme) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putString(KEY_THEME_STATE, theme).apply();
+
+        // Log the saved theme
+        System.out.println("Saved theme: " + theme);
+
+        // Apply the new theme
+        applyTheme();
+
+        // Restart the activity to reflect the theme change
+        recreate();
+    }
+
+    private void setThemeWithFade(String theme) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putString(KEY_THEME_STATE, theme).apply();
+
+        final View root = findViewById(android.R.id.content);
+
+        // Create a snapshot of the current UI
+        root.setDrawingCacheEnabled(true);
+        Bitmap snapshot = Bitmap.createBitmap(root.getDrawingCache());
+        root.setDrawingCacheEnabled(false);
+
+        final ImageView overlay = new ImageView(this);
+        overlay.setImageBitmap(snapshot);
+        ((ViewGroup) root).addView(overlay);
+
+        // Apply theme while overlay hides the flash
+        applyTheme();
+
+        // Fade out the overlay
+        overlay.animate()
+                .alpha(0f)
+                .setDuration(600)
+                .withEndAction(() -> ((ViewGroup) root).removeView(overlay))
+                .start();
     }
 
     private void updateHistoryButtonVisibility() {
