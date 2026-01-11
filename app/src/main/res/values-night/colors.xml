@@ -8,6 +8,10 @@
     <color name="gradient_start">#0Effbcad</color>
     <color name="gradient_end">#107a92ff</color>
 
+    <color name="reset_card_strokecolor">#30FF5555</color>
+    <color name="fields_card_strokecolor">#25CACACA</color>
+    <color name="card_bg">#181818</color> <!-- White -->
+
     <color name="relapse_button_bg">#FFFFFF</color> <!-- White -->
     <color name="relapse_button_text">#000000</color> <!-- Black -->
 

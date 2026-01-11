@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -127,6 +129,16 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
                     behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     behavior.setSkipCollapsed(true);
                     behavior.setDraggable(true);
+
+                    // 👉 Sync nav bar color with sheet background
+//                    Drawable bg = bottomSheet.getBackground();
+//                    if (bg instanceof ColorDrawable) {
+//                        int sheetColor = ((ColorDrawable) bg).getColor();
+//                        window.setNavigationBarColor(sheetColor);
+//                    } else {
+//                        // fallback if drawable isn't a ColorDrawable
+//                        window.setNavigationBarColor(ContextCompat.getColor(requireContext(), R.color.card_bg));
+//                    }
                 }
             }
         }

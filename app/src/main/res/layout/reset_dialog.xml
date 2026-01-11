@@ -18,8 +18,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:cardBackgroundColor="?attr/colorPrimary"
-        app:strokeWidth="0dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/reset_card_strokecolor"
         app:cardCornerRadius="18dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout

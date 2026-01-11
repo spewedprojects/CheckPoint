@@ -4,7 +4,7 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="android:colorBackground">#101010</item>
-        <item name="colorPrimary">#101010</item>
+        <item name="colorPrimary">@color/colorBackground</item>
         <item name="colorContainer">#101010</item>
         <item name="colorSecondary">#000000</item>
         <item name="titleTextColor">@color/white</item>
