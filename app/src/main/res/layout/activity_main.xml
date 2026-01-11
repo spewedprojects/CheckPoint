@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:fillViewport="true"
     android:fitsSystemWindows="false"
-    android:background="@drawable/diagonal_gradient"
+    android:background="@drawable/app_background"
     app:layout_constraintVertical_chainStyle="packed">
 
     <androidx.constraintlayout.widget.ConstraintLayout

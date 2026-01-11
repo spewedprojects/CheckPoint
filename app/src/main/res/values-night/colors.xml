@@ -5,11 +5,14 @@
     <color name="relapse_background">#1AED3B4C</color>
     <color name="relapse_ripple">#27FB3C65</color>
     <color name="relapse_stroke">#4CD02A2A</color>
-    <color name="gradient_start">#0Effbcad</color>
-    <color name="gradient_end">#107a92ff</color>
+    <color name="gradient_start_L">#0Effbcad</color>
+    <color name="gradient_end_L">#107a92ff</color>
+
+    <color name="gradient_start">#103348FF</color> <!--original #183357FF-->
+    <color name="gradient_end">#11FF2433</color> <!--original #15FF5733-->
 
     <color name="reset_card_strokecolor">#30FF5555</color>
-    <color name="fields_card_strokecolor">#25CACACA</color>
+    <color name="fields_card_strokecolor">#18CACACA</color>
     <color name="card_bg">#181818</color> <!-- White -->
 
     <color name="relapse_button_bg">#FFFFFF</color> <!-- White -->

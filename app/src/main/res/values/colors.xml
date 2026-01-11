@@ -8,8 +8,11 @@
     <color name="relapse_background">#0DFF002F</color>
     <color name="relapse_ripple">#27FF002F</color>
     <color name="relapse_stroke">#80D02A2A</color>
-    <color name="gradient_start">#0EFF5733</color>
-    <color name="gradient_end">#103357FF</color>
+    <color name="gradient_start_L">#0EFF5733</color>
+    <color name="gradient_end_L">#103357FF</color>
+
+    <color name="gradient_start">#123357FF</color>
+    <color name="gradient_end">#15FF3033</color>
 
     <color name="reset_card_strokecolor">#00000000</color>
     <color name="fields_card_strokecolor">#00CACACA</color>
