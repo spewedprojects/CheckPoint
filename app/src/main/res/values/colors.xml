@@ -7,10 +7,12 @@
     <color name="relapse_text">#CE0B0B</color>
     <color name="relapse_background">#0DFF002F</color>
     <color name="relapse_ripple">#27FF002F</color>
-    <color name="relapse_stroke">#4CD02A2A</color>
+    <color name="relapse_stroke">#80D02A2A</color>
     <color name="gradient_start">#0EFF5733</color>
     <color name="gradient_end">#103357FF</color>
 
     <color name="relapse_button_bg">#000000</color> <!-- Black -->
     <color name="relapse_button_text">#FFFFFF</color> <!-- White -->
+
+    <color name="boxstroke_color">#32000000</color>
 </resources>

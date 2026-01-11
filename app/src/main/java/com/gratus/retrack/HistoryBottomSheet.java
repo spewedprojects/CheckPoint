@@ -1,13 +1,19 @@
 package com.gratus.retrack;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -17,6 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +36,17 @@ import java.util.List;
 public class HistoryBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetBehavior<View> behavior;
+    private DialogBlurHelper blurHelper;
+    private static final float BLUR_INTENSITY = 2f; // Adjust intensity here
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // Initialize the Blur Helper
+        if (context instanceof Activity) {
+            blurHelper = new DialogBlurHelper((Activity) context, BLUR_INTENSITY);
+        }
+    }
 
     @Nullable
     @Override
@@ -55,14 +73,6 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
         recyclerView.setAdapter(adapter);
         // --- NEW CODE END ---
 
-        // Transparent system bars
-        Window window = requireDialog().getWindow();
-        if (window != null) {
-            window.setStatusBarColor(Color.TRANSPARENT);
-            window.setNavigationBarColor(Color.TRANSPARENT);
-            WindowCompat.setDecorFitsSystemWindows(window, false);
-        }
-
         ///*
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.bottom_sheet_root), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -81,19 +91,54 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
         super.onStart();
         Dialog dialog = getDialog();
         if (dialog != null) {
-            View bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-            if (bottomSheet != null) {
-                bottomSheet.setBackgroundColor(Color.TRANSPARENT);
-                behavior = BottomSheetBehavior.from(bottomSheet);
-                //behavior.setPeekHeight(300);
+            Window window = dialog.getWindow();
+            if (window != null) {
 
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                behavior.setSkipCollapsed(true);
-                behavior.setDraggable(true); // Keep enabled
+                // 1. Apply Blur
+                if (blurHelper != null) {
+                    blurHelper.applyBlur();
+                }
 
-                // Remove all the complex touch listeners - you don't need them!
+                // 1. Handle Transparent Background & Dimming
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                //window.setBackgroundDrawable(new ColorDrawable(Color.argb(15, 0, 0, 0))); // makes it look like a sheet is going up.
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                WindowInsetsControllerCompat insetsController =
+                        new WindowInsetsControllerCompat(window, window.getDecorView());
+
+                // Detect current night mode
+                int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                    // Dark mode → keep icons light (white)
+                    insetsController.setAppearanceLightStatusBars(false);
+                    insetsController.setAppearanceLightNavigationBars(false);
+                } else {
+                    // Light mode → use dark icons (black/gray)
+                    insetsController.setAppearanceLightStatusBars(true);
+                    insetsController.setAppearanceLightNavigationBars(true);
+                }
+
+                // 2. Configure Bottom Sheet Behavior
+                View bottomSheet = dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                if (bottomSheet != null) {
+                    bottomSheet.setBackgroundColor(Color.TRANSPARENT);
+                    behavior = BottomSheetBehavior.from(bottomSheet);
+
+                    behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    behavior.setSkipCollapsed(true);
+                    behavior.setDraggable(true);
+                }
             }
         }
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        // Remove Blur when sheet closes
+        if (blurHelper != null) {
+            blurHelper.removeBlur();
+        }
+        super.onDismiss(dialog);
     }
 
 }

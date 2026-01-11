@@ -10,4 +10,6 @@
 
     <color name="relapse_button_bg">#FFFFFF</color> <!-- White -->
     <color name="relapse_button_text">#000000</color> <!-- Black -->
+
+    <color name="boxstroke_color">#32FFFFFF</color>
 </resources>

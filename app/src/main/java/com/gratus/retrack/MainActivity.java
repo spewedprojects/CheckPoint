@@ -2,7 +2,6 @@ package com.gratus.retrack;
 
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.gratus.retrack.ThemeManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UnifiedDialogFragment.DialogListener {
 
     private TextView tvDaysFree, tvCountdown, tvMotivation, tvStaticLabel, tvStreak;
     private ImageButton lightButton, darkButton, autoButton;
@@ -112,23 +111,33 @@ public class MainActivity extends AppCompatActivity {
         loadCustomTexts(); // Load the edited texts
         updateHistoryButtonVisibility(); // Check history on load
 
-        // 4. Setup Button Listener
+        // 4. UPDATED Button Listener
         btnAction.setOnClickListener(v -> {
             if (!isJourneyStarted) {
                 startJourney();
             } else {
-                showRelapseDialog();
+                // Show the Relapse Dialog Fragment
+                UnifiedDialogFragment.newRelapseInstance()
+                        .show(getSupportFragmentManager(), "RelapseDialog");
             }
         });
 
-        // 5. Setup Long Click Listeners for Editing
+        // 5. UPDATED Long Click Listeners
         tvMotivation.setOnLongClickListener(v -> {
-            showFieldEditor(tvMotivation, KEY_TEXT_MOTIVATION, "Change Quote");
+            UnifiedDialogFragment.newEditorInstance(
+                    "Change Quote",
+                    tvMotivation.getText().toString(),
+                    KEY_TEXT_MOTIVATION
+            ).show(getSupportFragmentManager(), "EditorDialog");
             return true;
         });
 
         tvStaticLabel.setOnLongClickListener(v -> {
-            showFieldEditor(tvStaticLabel, KEY_TEXT_LABEL, "Change Unit");
+            UnifiedDialogFragment.newEditorInstance(
+                    "Change Unit",
+                    tvStaticLabel.getText().toString(),
+                    KEY_TEXT_LABEL
+            ).show(getSupportFragmentManager(), "EditorDialog");
             return true;
         });
 
@@ -303,97 +312,38 @@ public class MainActivity extends AppCompatActivity {
         tvStreak.setText("\uD83C\uDFC6 " + days + " days"); // 🏆 {days} days
     }
 
+    @Override
+    public void onRelapseConfirmed(String reason, String steps) {
+        // Logic moved here from old showRelapseDialog
+        long endTime = System.currentTimeMillis();
+        long startTime = prefs.getLong(KEY_START_TIME, endTime);
 
-    // --- DIALOGS ---
-    private void showRelapseDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.reset_dialog, null);
-        builder.setView(dialogView);
+        // 1. Save to DB
+        RelapseDbHelper dbHelper = new RelapseDbHelper(this);
+        dbHelper.addRelapse(startTime, endTime, reason, steps);
 
-        AlertDialog dialog = builder.create();
-        // 2.1. Set Transparent Background & Dim Amount
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setDimAmount(DIALOG_DIM_AMOUNT); // Applied Dimming
-        }
+        // 2. Reset Timer
+        prefs.edit().putLong(KEY_START_TIME, endTime).apply();
+        updateTimerDisplay();
 
-        MaterialButton btnCancel = dialogView.findViewById(R.id.dialog_cancel);
-        MaterialButton btnReset = dialogView.findViewById(R.id.dialog_relapse);
-        TextInputEditText etReason = dialogView.findViewById(R.id.reason_input);
-        TextInputEditText etSteps = dialogView.findViewById(R.id.next_steps_input);
-
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        btnReset.setOnClickListener(v -> {
-            // 1. Gather Data
-            long endTime = System.currentTimeMillis();
-            long startTime = prefs.getLong(KEY_START_TIME, endTime);
-            String reason = etReason.getText() != null ? etReason.getText().toString() : "";
-            String steps = etSteps.getText() != null ? etSteps.getText().toString() : "";
-
-            // 2. Save to DB
-            RelapseDbHelper dbHelper = new RelapseDbHelper(this);
-            dbHelper.addRelapse(startTime, endTime, reason, steps);
-
-            // 3. Reset Timer
-            prefs.edit().putLong(KEY_START_TIME, endTime).apply();
-            updateTimerDisplay();
-
-            // 4. Refresh Best Streak Display
-            updateBestStreakDisplay();
-            // 2.2. Check visibility again since we just added a record
-            updateHistoryButtonVisibility();
-
-            dialog.dismiss();
-        });
-
-        dialog.show();
+        // 3. Refresh UI
+        updateBestStreakDisplay();
+        updateHistoryButtonVisibility();
     }
 
-    /**
-     * Reusable method to edit text fields using your fields_editor.xml layout
-     */
-    private void showFieldEditor(TextView targetView, String prefsKey, String title) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.fields_editor, null); // Using your file
-        builder.setView(dialogView);
+    @Override
+    public void onFieldSaved(String prefsKey, String newValue) {
+        // Logic moved here from old showFieldEditor
 
-        AlertDialog dialog = builder.create();
-        // 2.1. Set Transparent Background & Dim Amount
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setDimAmount(DIALOG_DIM_AMOUNT); // Applied Dimming
+        // 1. Update the UI immediately
+        if (KEY_TEXT_MOTIVATION.equals(prefsKey)) {
+            tvMotivation.setText(newValue);
+        } else if (KEY_TEXT_LABEL.equals(prefsKey)) {
+            tvStaticLabel.setText(newValue);
         }
 
-        // Initialize Editor Views
-        TextView tvTitle = dialogView.findViewById(R.id.editorTitle);
-        TextInputEditText editText = dialogView.findViewById(R.id.editorEditText);
-        MaterialButton btnCancel = dialogView.findViewById(R.id.cancelBtn);
-        MaterialButton btnSave = dialogView.findViewById(R.id.saveBtn);
-
-        // Setup UI
-        tvTitle.setText(title);
-        editText.setText(targetView.getText()); // Pre-fill with current text
-        editText.requestFocus(); // Optional: Focus cursor immediately
-
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        btnSave.setOnClickListener(v -> {
-            String newText = editText.getText().toString().trim();
-            if (!newText.isEmpty()) {
-                // 1. Update UI
-                targetView.setText(newText);
-                // 2. Save to Storage
-                prefs.edit().putString(prefsKey, newText).apply();
-            }
-            dialog.dismiss();
-        });
-
-        dialog.show();
+        // 2. Save to Persistence
+        prefs.edit().putString(prefsKey, newValue).apply();
     }
 
     @Override
