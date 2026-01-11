@@ -131,14 +131,14 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
                     behavior.setDraggable(true);
 
                     // 👉 Sync nav bar color with sheet background
-//                    Drawable bg = bottomSheet.getBackground();
-//                    if (bg instanceof ColorDrawable) {
-//                        int sheetColor = ((ColorDrawable) bg).getColor();
-//                        window.setNavigationBarColor(sheetColor);
-//                    } else {
-//                        // fallback if drawable isn't a ColorDrawable
-//                        window.setNavigationBarColor(ContextCompat.getColor(requireContext(), R.color.card_bg));
-//                    }
+                    Drawable bg = bottomSheet.getBackground();
+                    if (bg instanceof ColorDrawable) {
+                        int sheetColor = ((ColorDrawable) bg).getColor();
+                        window.setNavigationBarColor(sheetColor);
+                    } else {
+                        // fallback if drawable isn't a ColorDrawable
+                        window.setNavigationBarColor(ContextCompat.getColor(requireContext(), R.color.card_bg));
+                    }
                 }
             }
         }

@@ -3,7 +3,9 @@
     android:id="@+id/bottom_sheet_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottomsheet_rounded"
     android:alpha="1"
+    android:fitsSystemWindows="false"
     app:layout_constraintVertical_bias="1">
 
     <!-- Drag handle at the top -->
@@ -24,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="18dp"
-        android:background="@drawable/bg_bottomsheet_rounded"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -72,12 +73,32 @@
         android:id="@+id/recycler_history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/card_bg"
         app:layout_constraintHeight_max="700dp"
-        android:paddingBottom="12dp"
         android:nestedScrollingEnabled="true"
         android:overScrollMode="ifContentScrolls"
         app:layout_constraintTop_toBottomOf="@id/divider_journal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveDB_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="18dp"
+        android:paddingHorizontal="16dp"
+        android:text="Save DB"
+        android:fontFamily="@font/atkinsonhyperlegiblenext_regular"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:textColor="?attr/colorOnPrimary"
+        app:cornerRadius="12dp"
+        app:strokeColor="@color/boxstroke_color"
+        app:strokeWidth="2dp"
+        android:backgroundTint="@color/colorContainerPub"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_history"
+        app:layout_constraintHorizontal_bias="1"
+        android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,8 +31,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import com.gratus.retrack.ThemeManager;
-
 public class MainActivity extends AppCompatActivity implements UnifiedDialogFragment.DialogListener {
 
     private TextView tvDaysFree, tvCountdown, tvMotivation, tvStaticLabel, tvStreak;
@@ -51,13 +49,11 @@ public class MainActivity extends AppCompatActivity implements UnifiedDialogFrag
     private static final String PREFS_NAME = "ReTrack_config_Prefs";
     private static final String KEY_START_TIME = "startTime";
     private static final String KEY_IS_RUNNING = "isRunning";
+    private static final String KEY_THEME_MODE = "theme_mode";
 
     // New Keys for Custom Text
     private static final String KEY_TEXT_MOTIVATION = "textMotivation";
     private static final String KEY_TEXT_LABEL = "textLabel";
-
-    // Configuration
-    private static final float DIALOG_DIM_AMOUNT = 0.2f; // Set your dim amount here (0.0 to 1.0)
 
     // Original button styles to revert to
     private ColorStateList originalBtnBackground;
@@ -66,24 +62,17 @@ public class MainActivity extends AppCompatActivity implements UnifiedDialogFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ThemeManager.applySavedTheme(this);
+        applyTheme();
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
         // 1. Initialize Views
-        rootLayout = findViewById(R.id.main);
-        tvDaysFree = findViewById(R.id.days_free);
-        tvCountdown = findViewById(R.id.countdown);
-        tvMotivation = findViewById(R.id.motivation_text); // Ensure ID is added in XML
-        tvStaticLabel = findViewById(R.id.static_text);
-        tvStreak = findViewById(R.id.bestStreak_days);
-        btnAction = findViewById(R.id.start_relapseButton);
+        rootLayout = findViewById(R.id.main); tvDaysFree = findViewById(R.id.days_free); tvCountdown = findViewById(R.id.countdown); tvMotivation = findViewById(R.id.motivation_text);
+        tvStaticLabel = findViewById(R.id.static_text); tvStreak = findViewById(R.id.bestStreak_days); btnAction = findViewById(R.id.start_relapseButton);
         //tvEditfields = findViewById(R.id.editorTitle);
 
-        lightButton = findViewById(R.id.theme_light);
-        darkButton = findViewById(R.id.theme_dark);
-        autoButton = findViewById(R.id.theme_auto);
+        lightButton = findViewById(R.id.theme_light); darkButton = findViewById(R.id.theme_dark); autoButton = findViewById(R.id.theme_auto);
 
         // Capture history button reference
         historyBtn = findViewById(R.id.history_space);
@@ -93,9 +82,7 @@ public class MainActivity extends AppCompatActivity implements UnifiedDialogFrag
         });
 
         // Store original styles from XML
-        originalBtnBackground = btnAction.getBackgroundTintList();
-        originalBtnTextColor = btnAction.getTextColors();
-        originalBtnText = btnAction.getText().toString();
+        originalBtnBackground = btnAction.getBackgroundTintList(); originalBtnTextColor = btnAction.getTextColors(); originalBtnText = btnAction.getText().toString();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -145,56 +132,103 @@ public class MainActivity extends AppCompatActivity implements UnifiedDialogFrag
 
         // Initialize theme buttons
         setupThemeButtons();
-        updateButtonVisibility();
+    }
+
+    /**
+     * Apply the saved theme or default to 'auto'.
+     */
+    private void applyTheme() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String theme = prefs.getString(KEY_THEME_MODE, "auto"); // Default to 'auto'
+
+        switch (theme) {
+            case "light":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case "dark":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case "auto":
+            default:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                break;
+        }
     }
 
     /**
      * Set up the theme toggle buttons.
      */
     private void setupThemeButtons() {
+//        ImageButton lightButton = findViewById(R.id.theme_light);
+//        ImageButton darkButton = findViewById(R.id.theme_dark);
+//        ImageButton autoButton = findViewById(R.id.theme_auto);
 
-        lightButton.setOnClickListener(v -> {
-            ThemeManager.setLight(this);
-            //updateButtonVisibility();
-        });
+        if (lightButton != null && darkButton != null && autoButton != null) {
+            // Get the current theme from SharedPreferences
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            String currentTheme = prefs.getString(KEY_THEME_MODE, "auto");
 
-        darkButton.setOnClickListener(v -> {
-            ThemeManager.setDark(this);
-            //updateButtonVisibility();
-        });
+            // Update button visibility based on the current theme
+            updateButtonVisibility(currentTheme, lightButton, darkButton, autoButton);
 
-        autoButton.setOnClickListener(v -> {
-            ThemeManager.setAuto(this);
-            updateButtonVisibility();
-        });
+            // Set click listeners for the buttons
+            lightButton.setOnClickListener(v -> {
+                setThemeAndSave("light");
+                updateButtonVisibility("light", lightButton, darkButton, autoButton);
+            });
+
+            darkButton.setOnClickListener(v -> {
+                setThemeAndSave("dark");
+                updateButtonVisibility("dark", lightButton, darkButton, autoButton);
+            });
+
+            autoButton.setOnClickListener(v -> {
+                setThemeAndSave("auto");
+                updateButtonVisibility("auto", lightButton, darkButton, autoButton);
+            });
+        }
+    }
+
+    /**
+     * Set the theme and save the selection to SharedPreferences.
+     */
+    private void setThemeAndSave(String theme) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        prefs.edit().putString(KEY_THEME_MODE, theme).apply();
+
+        // Log the saved theme
+        System.out.println("Saved theme: " + theme);
+
+        // Apply the new theme
+        applyTheme();
+
+        // Restart the activity to reflect the theme change
+        recreate();
     }
 
     /**
      * Update the visibility of the theme buttons based on the current theme.
      */
-    private void updateButtonVisibility() {
-        String mode = ThemeManager.getSavedMode(this);
-
-        if (ThemeManager.MODE_LIGHT.equals(mode)) {
-            lightButton.setVisibility(View.GONE);
-            lightButton.setAlpha(0.1f);
-            darkButton.setVisibility(View.VISIBLE);
-            autoButton.setVisibility(View.GONE);
-            System.out.println("Light Mode: Gone (Light button, Auto button), Visible (Dark button)");
-
-        } else if (ThemeManager.MODE_DARK.equals(mode)) {
-            lightButton.setVisibility(View.GONE);
-            darkButton.setVisibility(View.GONE);
-            autoButton.setVisibility(View.VISIBLE);
-            autoButton.setAlpha(0.1f);
-            System.out.println("Dark Mode: Gone (Light button, Dark button), Visible (Auto button)");
-
-        } else {
-            lightButton.setVisibility(View.VISIBLE);
-            lightButton.setAlpha(0.1f);
-            darkButton.setVisibility(View.GONE);
-            autoButton.setVisibility(View.GONE);
-            System.out.println("Auto Mode: Gone (Auto button, Dark button), Visible (Light button)");
+    private void updateButtonVisibility(String currentTheme, ImageButton lightButton, ImageButton darkButton, ImageButton autoButton) {
+        switch (currentTheme) {
+            case "light":
+                lightButton.setVisibility(View.GONE);
+                darkButton.setVisibility(View.VISIBLE);
+                autoButton.setVisibility(View.GONE);
+                System.out.println("LIGHT mode - GONE(Light button and Auto button), VISIBLE (Dark button)");
+                break;
+            case "dark":
+                lightButton.setVisibility(View.GONE);
+                darkButton.setVisibility(View.GONE);
+                autoButton.setVisibility(View.VISIBLE);
+                System.out.println("DARK mode - GONE(Light button and Dark button), VISIBLE (Auto button)");
+                break;
+            case "auto":
+                lightButton.setVisibility(View.VISIBLE);
+                darkButton.setVisibility(View.GONE);
+                autoButton.setVisibility(View.GONE);
+                System.out.println("AUTO mode - GONE(Dark button and Auto button), VISIBLE (Light button)");
+                break;
         }
     }
 
@@ -349,6 +383,5 @@ public class MainActivity extends AppCompatActivity implements UnifiedDialogFrag
     @Override
     protected void onResume() {
         super.onResume();
-        updateButtonVisibility(); // THIS IS THE FIX
     }
 }

@@ -17,6 +17,8 @@
     <color name="reset_card_strokecolor">#00000000</color>
     <color name="fields_card_strokecolor">#00CACACA</color>
     <color name="card_bg">#FFFFFF</color> <!-- White -->
+    <color name="colorContainerPub">#F6F6F9</color>
+
 
     <color name="relapse_button_bg">#000000</color> <!-- Black -->
     <color name="relapse_button_text">#FFFFFF</color> <!-- White -->
