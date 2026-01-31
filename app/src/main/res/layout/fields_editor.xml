@@ -9,19 +9,19 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            app:layout_constraintWidth_max="310dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="45dp"
-            app:cardElevation="8dp"
             android:layout_marginVertical="24dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:cardBackgroundColor="@color/card_bg"
-            app:strokeWidth="2dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_max="310dp"
             app:strokeColor="@color/fields_card_strokecolor"
-            app:cardCornerRadius="18dp">
+            app:strokeWidth="2dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

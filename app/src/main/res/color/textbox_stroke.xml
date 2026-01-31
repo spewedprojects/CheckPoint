@@ -4,6 +4,7 @@
     <item
         android:color="@color/textbox_stroke_focused2"
         android:state_focused="true"/>
+
     <!-- Default (unfocused) state -->
     <item
         android:color="@color/textbox_stroke_unfocused"/>
