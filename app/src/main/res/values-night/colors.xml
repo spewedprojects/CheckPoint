@@ -13,8 +13,16 @@
 
     <color name="reset_card_strokecolor">#30FF5555</color>
     <color name="fields_card_strokecolor">#18CACACA</color>
-    <color name="card_bg">#181818</color> <!-- White -->
+    <color name="card_bg">#181818</color> <!-- dark gray -->
+    <color name="card_bg_translucent">#5A000000</color> <!-- dark gray 35% opaque -->
     <color name="colorContainerPub">#101010</color>
+
+    <color name="text_handle_color">#A5FFFFFF</color>
+    <color name="text_highlight_color">#41FFFFFF</color>
+
+    <color name="textbox_stroke_unfocused">#80FFFFFF</color>
+    <color name="textbox_stroke_focused">#D9FFFFFF</color>
+    <color name="textbox_stroke_focused2">#4CD02A2A</color>
 
     <color name="relapse_button_bg">#FFFFFF</color> <!-- White -->
     <color name="relapse_button_text">#000000</color> <!-- Black -->
