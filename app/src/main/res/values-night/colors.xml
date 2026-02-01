@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black_white">#FFFFFF</color>
+    <color name="white_black">#000000</color>
+
     <color name="colorBackground">#101010</color>
     <color name="relapse_text">#FF4747</color>
     <color name="relapse_background">#1AED3B4C</color>

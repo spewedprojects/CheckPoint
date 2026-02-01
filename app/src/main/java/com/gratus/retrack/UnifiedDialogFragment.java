@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -36,7 +39,7 @@ public class UnifiedDialogFragment extends DialogFragment {
 
     // UI Customization
     private static final float DIM_AMOUNT = 0.0f;
-    private static final float BLUR_INTENSITY = 12f; // Change this value to adjust blur strength
+    private static final float BLUR_INTENSITY = 16f; // Change this value to adjust blur strength
 
     // Helper
     private DialogBlurHelper blurHelper;
@@ -138,6 +141,16 @@ public class UnifiedDialogFragment extends DialogFragment {
         super.onDismiss(dialog);
     }
 
+    private static void clearFocusOnKeyboardHide(EditText editText, View rootView) {
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
+            boolean imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime());
+            if (!imeVisible) {
+                editText.clearFocus();
+            }
+            return insets;
+        });
+    }
+
     // --- Setup Helpers --- (Unchanged)
     private View setupRelapseDialog(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.reset_dialog, null);
@@ -147,6 +160,9 @@ public class UnifiedDialogFragment extends DialogFragment {
         TextInputEditText etReason = view.findViewById(R.id.reason_input);
         TextInputEditText etSteps = view.findViewById(R.id.next_steps_input);
 
+        clearFocusOnKeyboardHide(etReason, view);
+        clearFocusOnKeyboardHide(etSteps, view);
+
         btnCancel.setOnClickListener(v -> dismiss());
 
         btnReset.setOnClickListener(v -> {
@@ -155,7 +171,6 @@ public class UnifiedDialogFragment extends DialogFragment {
             listener.onRelapseConfirmed(reason, steps);
             dismiss();
         });
-
         return view;
     }
 
@@ -171,6 +186,7 @@ public class UnifiedDialogFragment extends DialogFragment {
             tvTitle.setText(getArguments().getString(ARG_TITLE));
             editText.setText(getArguments().getString(ARG_CURRENT_TEXT));
             editText.requestFocus();
+            clearFocusOnKeyboardHide(editText, view);
         }
 
         btnCancel.setOnClickListener(v -> dismiss());
@@ -183,7 +199,6 @@ public class UnifiedDialogFragment extends DialogFragment {
             }
             dismiss();
         });
-
         return view;
     }
 }

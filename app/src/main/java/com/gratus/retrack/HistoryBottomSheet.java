@@ -2,13 +2,19 @@ package com.gratus.retrack;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,13 +41,22 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HistoryBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetBehavior<View> behavior;
     private DialogBlurHelper blurHelper;
-    private static final float BLUR_INTENSITY = 2f; // Adjust intensity here
+    private static final float BLUR_INTENSITY = 8f; // Adjust intensity here
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -61,6 +78,9 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         // Close button logic
         view.findViewById(R.id.close_history).setOnClickListener(v -> dismiss());
+        // Export button set up here
+        ImageButton exportButton = view.findViewById(R.id.saveDB_btn);
+        exportButton.setOnClickListener(v -> exportData());
 
         // --- NEW CODE START ---
         RecyclerView recyclerView = view.findViewById(R.id.recycler_history);
@@ -87,6 +107,74 @@ public class HistoryBottomSheet extends BottomSheetDialogFragment {
         });
         //*/
     }
+
+    // 01/02/2026 - Functionality to export the database - Starts here
+    private void exportData() {
+        try {
+            String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault()).format(new Date());
+
+            // Export .db files
+            exportFile("retrack_data" + timestamp + ".db", "application/octet-stream");
+
+            Toast.makeText(requireContext(), "Exported successfully!", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(requireContext(), "Export encountered an error.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void exportFile(String fileName, String mimeType) throws Exception {
+        OutputStream outputStream;
+        Context context = requireContext(); // or getContext()
+        ContentResolver resolver = context.getContentResolver();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Use MediaStore for Android 10+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+            values.put(MediaStore.MediaColumns.MIME_TYPE, mimeType);
+            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS + "/ReTrackExports");
+
+            Uri fileUri = resolver.insert(MediaStore.Files.getContentUri("external"), values);
+            if (fileUri == null) {
+                throw new FileNotFoundException("Failed to create file in Documents directory");
+            }
+            outputStream = resolver.openOutputStream(fileUri);
+        } else {
+            // Use legacy storage for Android 9 and below
+            File exportDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File meditationDir = new File(exportDir, "ReTrackExports");
+            if (!meditationDir.exists() && !meditationDir.mkdirs()) {
+                throw new Exception("Failed to create ReTrackExports directory.");
+            }
+            File exportFile = new File(meditationDir, fileName);
+            outputStream = new FileOutputStream(exportFile);
+        }
+
+        // Export database file
+        String dbName;
+        if (fileName.contains("retrack_data")) {
+            dbName = "retrack_data.db";
+        } else {
+            // Handle the case where none of the conditions are met (optional but good practice)
+            dbName = "default.db"; // Or throw an exception, or assign null
+        }
+        exportDatabase(dbName, outputStream);
+
+        outputStream.close();
+    }
+
+    private void exportDatabase(String dbName, OutputStream outputStream) throws Exception {
+        String databasePath = requireContext().getDatabasePath(dbName).getAbsolutePath();
+        try (InputStream inputStream = new FileInputStream(databasePath)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+        }
+    }
+    // 01/02/2026 - Functionality to export the database - Ends here
 
     @Override
     public void onStart() {

@@ -8,7 +8,7 @@
         <item name="colorPrimary">@color/colorBackground</item>
         <item name="colorContainer">#101010</item>
         <item name="colorSecondary">#000000</item>
-        <item name="titleTextColor">@color/white</item>
+        <item name="titleTextColor">@color/black_white</item>
         <item name="colorOnPrimary">#CACACA</item>
         <item name="colorAccent">#CACACA</item>
 
