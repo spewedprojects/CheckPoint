@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/card_bg_translucent" />
+    <solid android:color="@android:color/transparent" />
     <corners
-        android:topLeftRadius="22dp"
-        android:topRightRadius="22dp"
-        android:bottomLeftRadius="22dp"
-        android:bottomRightRadius="22dp"/>
-    <padding
-        android:top="4dp"
-        android:left="4dp"
-        android:right="4dp"
-        android:bottom="4dp" />
+        android:topLeftRadius="18dp"
+        android:topRightRadius="18dp"
+        android:bottomLeftRadius="18dp"
+        android:bottomRightRadius="18dp"/>
+    <stroke
+        android:color="@color/reset_card_strokecolor"
+        android:width="2dp"/>
 </shape>

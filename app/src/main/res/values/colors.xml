@@ -14,10 +14,10 @@
     <color name="gradient_start">#123357FF</color>
     <color name="gradient_end">#15FF3033</color>
 
-    <color name="reset_card_strokecolor">#00000000</color>
-    <color name="fields_card_strokecolor">#00CACACA</color>
+    <color name="reset_card_strokecolor">#40000000</color>
+    <color name="fields_card_strokecolor">#26000000</color>
     <color name="card_bg">#FFFFFF</color> <!-- White -->
-    <color name="card_bg_translucent">#5AFFFFFF</color> <!-- White 35% opaque -->
+    <color name="card_bg_translucent">#CBFFFFFF</color> <!-- White 35% opaque -->
     <color name="colorContainerPub">#F6F6F9</color>
 
     <color name="text_handle_color">#A5000000</color>

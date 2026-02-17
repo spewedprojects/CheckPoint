@@ -1,4 +1,4 @@
-package com.gratus.retrack;
+package com.gratus.retrack.helpers;
 
 import android.app.Activity;
 import android.graphics.RenderEffect;

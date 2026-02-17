@@ -17,7 +17,7 @@
     <color name="reset_card_strokecolor">#30FF5555</color>
     <color name="fields_card_strokecolor">#18CACACA</color>
     <color name="card_bg">#181818</color> <!-- dark gray -->
-    <color name="card_bg_translucent">#5A000000</color> <!-- dark gray 35% opaque -->
+    <color name="card_bg_translucent">#CB181818</color> <!-- dark gray 35% opaque -->
     <color name="colorContainerPub">#101010</color>
 
     <color name="text_handle_color">#A5FFFFFF</color>

@@ -24,6 +24,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.gratus.retrack.helpers.DialogBlurHelper;
 
 public class UnifiedDialogFragment extends DialogFragment {
 
@@ -39,7 +40,7 @@ public class UnifiedDialogFragment extends DialogFragment {
 
     // UI Customization
     private static final float DIM_AMOUNT = 0.0f;
-    private static final float BLUR_INTENSITY = 16f; // Change this value to adjust blur strength
+    private static final float BLUR_INTENSITY = 28f; // Change this value to adjust blur strength
 
     // Helper
     private DialogBlurHelper blurHelper;
@@ -153,7 +154,7 @@ public class UnifiedDialogFragment extends DialogFragment {
 
     // --- Setup Helpers --- (Unchanged)
     private View setupRelapseDialog(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.reset_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_reset, null);
 
         MaterialButton btnCancel = view.findViewById(R.id.dialog_cancel);
         MaterialButton btnReset = view.findViewById(R.id.dialog_relapse);
@@ -175,7 +176,7 @@ public class UnifiedDialogFragment extends DialogFragment {
     }
 
     private View setupEditorDialog(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.fields_editor, null);
+        View view = inflater.inflate(R.layout.dialog_fields_editor, null);
 
         TextView tvTitle = view.findViewById(R.id.editorTitle);
         TextInputEditText editText = view.findViewById(R.id.editorEditText);
