@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.gratus.retrack.utils.TextFormatUtils;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +35,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RelapseLog item = historyList.get(position);
 
-        // 1. Relapse Number (Count backwards so newest is highest number)
+        // 1. Relapse Number (Count backwards so newest is the highest number)
         int relapseNumber = historyList.size() - position;
         holder.tvTitle.setText("Reset #" + relapseNumber);
 
@@ -44,8 +47,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.tvTimestamp.setText(datePart + " • " + timePart + "hrs");
 
         // 3. Texts
-        holder.tvReason.setText(item.reason.isEmpty() ? "No reason recorded" : item.reason);
-        holder.tvNextStepsDesc.setText(item.nextSteps.isEmpty() ? "No steps recorded" : item.nextSteps);
+        holder.tvReason.setText(item.reason.isEmpty() ? "No reason recorded" : (TextFormatUtils.formatNotesForDisplay(item.reason)));
+        holder.tvNextStepsDesc.setText(item.nextSteps.isEmpty() ? "No steps recorded" : (TextFormatUtils.formatNotesForDisplay(item.nextSteps)));
 
         // 4. Duration Formatting
         long days = TimeUnit.MILLISECONDS.toDays(item.duration);
@@ -68,7 +71,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             super(itemView);
             tvTitle = itemView.findViewById(R.id.relapse_count);
             tvTimestamp = itemView.findViewById(R.id.timestamp);
-            tvReason = itemView.findViewById(R.id.reason);
+            tvReason = itemView.findViewById(R.id.reason_desc);
             tvNextStepsDesc = itemView.findViewById(R.id.next_steps_desc);
             tvDuration = itemView.findViewById(R.id.streak_duration);
         }
